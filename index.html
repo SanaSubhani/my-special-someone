@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="My Special Someone — personalized digital surprises made with love." />
+  <title>My Special Someone | A Surprise Made Just for You</title>
+  <style>
+    :root {
+      --ink: #35263a;
+      --muted: #756879;
+      --cream: #fffafc;
+      --pink: #f8dce8;
+      --rose: #d95d86;
+      --rose-dark: #a93461;
+      --lavender: #e8e0fb;
+      --purple: #7554bd;
+      --purple-dark: #4b3488;
+      --line: rgba(75, 52, 136, .13);
+      --shadow: 0 18px 50px rgba(77, 42, 79, .12);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink); background: var(--cream); line-height: 1.55;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    .topbar {
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding: 17px clamp(18px, 5vw, 70px); background: rgba(255,250,252,.9);
+      border-bottom: 1px solid rgba(217,93,134,.12); position: sticky; top:0; z-index:10; backdrop-filter: blur(16px);
+    }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:850; letter-spacing:-.04em; font-size:1.05rem; }
+    .brand-mark { display:grid; place-items:center; width:38px; height:38px; border-radius:14px; background:linear-gradient(135deg,var(--pink),var(--lavender)); font-size:1.2rem; }
+    .nav { display:flex; gap:22px; align-items:center; color:var(--muted); font-size:.92rem; }
+    .nav a:hover { color:var(--rose-dark); }
+    .nav-cta, .btn {
+      border:0; border-radius:999px; padding:12px 19px; font-weight:750; cursor:pointer; transition:transform .2s, box-shadow .2s, opacity .2s;
+    }
+    .nav-cta, .btn-primary { color:white; background:linear-gradient(135deg,var(--rose),var(--rose-dark)); box-shadow:0 8px 20px rgba(169,52,97,.18); }
+    .btn:hover, .nav-cta:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+    .btn-secondary { background:white; color:var(--ink); border:1px solid var(--line); }
+    .hero {
+      position:relative; overflow:hidden; min-height:610px; display:grid; align-items:center;
+      padding: clamp(58px, 9vw, 110px) clamp(20px, 7vw, 100px);
+      background: radial-gradient(circle at 82% 25%, rgba(232,224,251,.95), transparent 28%),
+                  radial-gradient(circle at 18% 75%, rgba(248,220,232,.85), transparent 35%),
+                  linear-gradient(135deg,#fff9fc,#fffdfd 60%,#f6f0ff);
+    }
+    .hero:before, .hero:after { content:""; position:absolute; border:1px solid rgba(217,93,134,.17); border-radius:50%; pointer-events:none; }
+    .hero:before { width:420px; height:420px; right:-100px; top:80px; }
+    .hero:after { width:300px; height:300px; right:-38px; top:140px; }
+    .hero-inner { position:relative; z-index:1; max-width:760px; }
+    .eyebrow { display:inline-flex; gap:8px; align-items:center; padding:8px 13px; border-radius:999px; background:white; border:1px solid var(--line); color:var(--rose-dark); font-weight:750; font-size:.82rem; }
+    h1 { margin:22px 0 18px; font-size:clamp(2.7rem, 7vw, 5.7rem); line-height:.98; letter-spacing:-.07em; max-width:820px; }
+    .gradient-text { background:linear-gradient(110deg,var(--rose-dark),var(--purple)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .hero p { max-width:610px; color:var(--muted); font-size:clamp(1rem, 2vw, 1.2rem); }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:27px; }
+    .hero-note { font-size:.84rem !important; margin-top:17px; }
+    .floating-card {
+      position:absolute; right:clamp(30px, 9vw, 150px); top:50%; transform:translateY(-40%) rotate(5deg);
+      width:230px; height:285px; border-radius:30px; background:rgba(255,255,255,.74); border:1px solid white;
+      box-shadow:var(--shadow); display:flex; flex-direction:column; justify-content:center; align-items:center; gap:14px; text-align:center;
+      backdrop-filter:blur(12px); z-index:1;
+    }
+    .gift-emoji { font-size:5.5rem; filter:drop-shadow(0 12px 12px rgba(169,52,97,.16)); }
+    .floating-card strong { font-family:Georgia,serif; font-size:1.5rem; }
+    .floating-card span { font-size:.8rem; color:var(--muted); }
+    section { padding:80px clamp(20px, 7vw, 100px); }
+    .section-heading { text-align:center; max-width:670px; margin:0 auto 36px; }
+    .section-heading .kicker { color:var(--rose-dark); font-weight:800; font-size:.78rem; letter-spacing:.13em; text-transform:uppercase; }
+    h2 { font-size:clamp(2rem,4vw,3.2rem); letter-spacing:-.055em; line-height:1.05; margin:10px 0 13px; }
+    .section-heading p { color:var(--muted); margin:0; }
+    .category-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; max-width:1050px; margin:auto; }
+    .category-card { padding:32px; border-radius:var(--radius); position:relative; overflow:hidden; min-height:295px; box-shadow:var(--shadow); }
+    .category-card.couple { background:linear-gradient(145deg,#fff0f5,#f8dce8 75%,#f7c6da); }
+    .category-card.friend { background:linear-gradient(145deg,#f8f5ff,#e8e0fb 75%,#d8c9f5); }
+    /* Special GF/BF palette: red, cream, blush pink and warm brown */
+    .category-card.my-love { background:linear-gradient(145deg,#fff8ed 0%,#f9dce0 48%,#e9a0a8 100%); color:#5a302d; border:1px solid rgba(135,55,49,.12); }
+    .category-card.my-love p { color:#704b46; }
+    .category-card.my-love .btn { background:#9f2938; color:#fffaf2; }
+    .category-card.my-love .category-bg { color:rgba(159,41,56,.12); }
+    .category-icon { font-size:2.4rem; margin-bottom:15px; }
+    .category-card h3 { font-size:1.8rem; margin:0 0 8px; letter-spacing:-.04em; }
+    .category-card p { color:#6f6072; max-width:370px; }
+    .category-card .btn { margin-top:12px; }
+    .category-card.couple .btn { background:var(--rose-dark); color:white; }
+    .category-card.friend .btn { background:var(--purple-dark); color:white; }
+    .category-bg { position:absolute; right:-22px; bottom:-42px; font-size:9rem; opacity:.12; transform:rotate(-15deg); }
+    .gift-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; max-width:1100px; margin:auto; }
+    .gift-card { border:1px solid var(--line); background:white; border-radius:22px; overflow:hidden; box-shadow:0 8px 25px rgba(77,42,79,.05); }
+    .gift-art { min-height:150px; display:grid; place-items:center; font-size:3.5rem; background:linear-gradient(135deg,#fff0f5,#f1eaff); }
+    .gift-card:nth-child(2) .gift-art { background:linear-gradient(135deg,#f5efff,#e2d6ff); }
+    .gift-card:nth-child(3) .gift-art { background:linear-gradient(135deg,#fff5e7,#ffe0ea); }
+    .gift-body { padding:20px; }
+    .gift-body h3 { margin:0 0 6px; }
+    .gift-body p { color:var(--muted); font-size:.91rem; margin:0 0 15px; }
+    .price { font-weight:850; color:var(--rose-dark); margin-bottom:13px; }
+    .gift-body .btn { width:100%; }
+    .steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; max-width:1050px; margin:auto; }
+    .step { padding:25px; background:white; border:1px solid var(--line); border-radius:20px; }
+    .step-num { width:42px; height:42px; border-radius:14px; display:grid; place-items:center; background:var(--pink); color:var(--rose-dark); font-weight:900; margin-bottom:14px; }
+    .step h3 { margin:0 0 8px; }
+    .step p { color:var(--muted); margin:0; font-size:.93rem; }
+    .reveal-section { background:linear-gradient(135deg,#f8e8f0,#f0eaff); }
+    .reveal-box { max-width:760px; margin:auto; padding:clamp(25px,5vw,45px); background:rgba(255,255,255,.83); border:1px solid white; border-radius:30px; box-shadow:var(--shadow); text-align:center; }
+    .reveal-box p { color:var(--muted); }
+    .code-form { display:flex; gap:10px; max-width:480px; margin:24px auto 0; }
+    .code-form input { min-width:0; flex:1; text-transform:uppercase; letter-spacing:.08em; }
+    input, select, textarea { width:100%; padding:13px 14px; border:1px solid #e4d9e7; background:white; border-radius:13px; outline:none; color:var(--ink); }
+    input:focus, select:focus, textarea:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(117,84,189,.1); }
+    .small-note { font-size:.8rem; color:var(--muted); }
+    .order-wrap { max-width:850px; margin:auto; background:white; padding:clamp(22px,4vw,38px); border:1px solid var(--line); border-radius:28px; box-shadow:var(--shadow); }
+    .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .field { display:flex; flex-direction:column; gap:7px; }
+    .field label { font-weight:750; font-size:.9rem; }
+    .field.full { grid-column:1/-1; }
+    .field small { color:var(--muted); }
+    .form-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+    .payment-note { background:#fff6e8; color:#78572b; padding:13px 15px; border-radius:13px; font-size:.88rem; margin-top:18px; }
+    .result { display:none; text-align:left; margin-top:20px; padding:18px; border-radius:16px; background:#f4fff7; border:1px solid #cdebd5; overflow-wrap:anywhere; }
+    .result.show { display:block; }
+    .result code { background:white; padding:5px 8px; border-radius:8px; font-weight:900; font-size:1.1rem; }
+    footer { padding:34px clamp(20px,7vw,100px); background:#34243b; color:#f8edf7; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; }
+    footer p { margin:4px 0 0; color:#d5c5d8; font-size:.85rem; }
+    .toast { position:fixed; bottom:20px; left:50%; transform:translate(-50%,20px); opacity:0; pointer-events:none; z-index:20; background:#34243b; color:white; padding:12px 18px; border-radius:999px; box-shadow:var(--shadow); transition:.25s; max-width:90vw; text-align:center; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    .modal-backdrop { display:none; position:fixed; inset:0; z-index:30; background:rgba(28,15,32,.55); padding:20px; align-items:center; justify-content:center; }
+    .modal-backdrop.show { display:flex; }
+    .modal { width:min(100%,560px); background:white; border-radius:26px; padding:28px; max-height:90vh; overflow:auto; position:relative; }
+    .modal-close { position:absolute; top:13px; right:15px; border:0; background:#f7eef6; width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1.2rem; }
+    .modal h2 { padding-right:36px; font-size:2rem; }
+    .modal p { color:var(--muted); }
+    .surprise-content { display:none; margin-top:18px; padding:18px; background:linear-gradient(135deg,#fff0f5,#f1eaff); border-radius:18px; }
+    .surprise-content.show { display:block; }
+    @media(max-width:850px) {
+      .floating-card { opacity:.22; right:-10px; transform:translateY(-35%) scale(.8) rotate(5deg); }
+      .hero-inner { max-width:700px; }
+      .gift-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .steps { grid-template-columns:1fr; }
+    }
+    @media(max-width:620px) {
+      .nav a:not(.nav-cta) { display:none; }
+      .nav { gap:0; }
+      .hero { min-height:560px; }
+      .floating-card { display:none; }
+      .category-grid, .gift-grid, .form-grid { grid-template-columns:1fr; }
+      .category-card { min-height:260px; }
+      .code-form { flex-direction:column; }
+      .code-form .btn { width:100%; }
+      section { padding-top:60px; padding-bottom:60px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="My Special Someone home">
+      <span class="brand-mark">♡</span><span>My Special Someone</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#gifts">Gift ideas</a>
+      <a href="#how">How it works</a>
+      <a href="#unlock">Unlock a gift</a>
+      <a class="nav-cta" href="#order">Create a surprise</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-inner">
+        <span class="eyebrow">♡ Little surprises. Big feelings.</span>
+        <h1>Someone has a<br><span class="gradient-text">special surprise</span><br>for you.</h1>
+        <p>Turn your favourite photos, memories and messages into a digital gift they’ll never forget. Made with love, revealed with a secret code.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#categories">Create a surprise <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-secondary" href="#unlock">I have a secret code 🔐</a>
+        </div>
+        <p class="hero-note">For your person, your best friend, and every memory worth keeping.</p>
+      </div>
+      <div class="floating-card" aria-hidden="true">
+        <div class="gift-emoji">🎁</div>
+        <strong>Made just for you</strong>
+        <span>A little magic is waiting inside</span>
+      </div>
+    </section>
+
+    <section id="categories">
+      <div class="section-heading">
+        <span class="kicker">Choose your kind of love</span>
+        <h2>Who is your surprise for?</h2>
+        <p>Pick a vibe. We’ll help turn your memories into something personal.</p>
+      </div>
+      <div class="category-grid">
+        <article class="category-card couple">
+          <div class="category-icon">❤️</div>
+          <h3>Unlock My Heart</h3>
+          <p>For couples: romantic videos, photo collages, love letters and anniversary memories.</p>
+          <button class="btn" data-category="couples" data-scroll-order>Make a romantic gift</button>
+          <span class="category-bg" aria-hidden="true">♡</span>
+        </article>
+        <article class="category-card friend">
+          <div class="category-icon">💜</div>
+          <h3>Revealora</h3>
+          <p>For friends: birthday surprises, best-friend collages, friendship videos and heartfelt notes.</p>
+          <button class="btn" data-category="friends" data-scroll-order>Make a friendship gift</button>
+          <span class="category-bg" aria-hidden="true">✦</span>
+        </article>
+        <article class="category-card my-love">
+          <div class="category-icon">❤️</div>
+          <h3>For My Love</h3>
+          <p>For your girlfriend or boyfriend — romantic videos, cute photo collages and heartfelt love messages.</p>
+          <button class="btn" data-category="girlfriend-boyfriend" data-scroll-order>Make a gift for my love</button>
+          <span class="category-bg" aria-hidden="true">♡</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="gifts">
+      <div class="section-heading">
+        <span class="kicker">Thoughtful, personal, unforgettable</span>
+        <h2>Choose a digital gift</h2>
+        <p>Sample gift ideas below. Prices are placeholders for the demo and can be changed before launch.</p>
+      </div>
+      <div class="gift-grid">
+        <article class="gift-card">
+          <div class="gift-art" aria-hidden="true">🎞️</div>
+          <div class="gift-body">
+            <h3>Memory Movie</h3>
+            <p>Your photos, music mood and a personal message brought together in a video.</p>
+            <div class="price">From Rs. 1,499</div>
+            <button class="btn btn-secondary" data-gift="Memory Movie" data-category="couples" data-scroll-order>Choose this gift</button>
+          </div>
+        </article>
+        <article class="gift-card">
+          <div class="gift-art" aria-hidden="true">🖼️</div>
+          <div class="gift-body">
+            <h3>Photo Collage</h3>
+            <p>A beautiful custom collage featuring favourite moments, names and dates.</p>
+            <div class="price">From Rs. 699</div>
+            <button class="btn btn-secondary" data-gift="Photo Collage" data-scroll-order>Choose this gift</button>
+          </div>
+        </article>
+        <article class="gift-card">
+          <div class="gift-art" aria-hidden="true">💌</div>
+          <div class="gift-body">
+            <h3>Secret Letter</h3>
+            <p>A digital letter with your own words, a special reveal and a little animation.</p>
+            <div class="price">From Rs. 499</div>
+            <button class="btn btn-secondary" data-gift="Secret Letter" data-category="friends" data-scroll-order>Choose this gift</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="how" style="background:#fff5f9;">
+      <div class="section-heading">
+        <span class="kicker">Easy as one, two, surprise</span>
+        <h2>How it works</h2>
+        <p>A simple process from your idea to their unforgettable reaction.</p>
+      </div>
+      <div class="steps">
+        <article class="step"><div class="step-num">01</div><h3>Tell us your story</h3><p>Choose a gift, share photos and write the message you want them to see.</p></article>
+        <article class="step"><div class="step-num">02</div><h3>Your surprise is created</h3><p>For this starter version, your order request is prepared for review. After launch, the creator/admin workflow will manage final gifts.</p></article>
+        <article class="step"><div class="step-num">03</div><h3>Share the secret code</h3><p>Your special person enters their code and opens the surprise made just for them.</p></article>
+      </div>
+    </section>
+
+    <section class="reveal-section" id="unlock">
+      <div class="reveal-box">
+        <div style="font-size:2.5rem" aria-hidden="true">🔐💝</div>
+        <h2>Have a secret code?</h2>
+        <p>Someone has made a little surprise just for you. Enter your code below to see if a gift is waiting.</p>
+        <form class="code-form" id="codeForm">
+          <input id="secretCode" type="text" placeholder="Enter your secret code" aria-label="Secret code" autocomplete="off" required />
+          <button class="btn btn-primary" type="submit">Unlock my surprise ✨</button>
+        </form>
+        <p class="small-note">Demo only: use <strong>LOVE-7294</strong> or <strong>FRIEND-2486</strong> to preview the reveal. These sample codes are not private.</p>
+        <div class="result" id="codeResult" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="order">
+      <div class="section-heading">
+        <span class="kicker">Create something meaningful</span>
+        <h2>Order a digital surprise</h2>
+        <p>Tell us a little about the gift. This demo form prepares a request on your device; it does not send an order to the business yet.</p>
+      </div>
+      <div class="order-wrap">
+        <form id="orderForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="customerName">Your name *</label>
+              <input id="customerName" name="customerName" placeholder="Your name" required />
+            </div>
+            <div class="field">
+              <label for="customerContact">WhatsApp number or email *</label>
+              <input id="customerContact" name="customerContact" placeholder="How can we contact you?" required />
+            </div>
+            <div class="field">
+              <label for="giftFor">This gift is for *</label>
+              <select id="giftFor" name="giftFor" required>
+                <option value="">Choose one</option>
+                <option value="couples">Couples — Unlock My Heart ❤️</option>
+                <option value="friends">Friends — Revealora 💜</option>
+                <option value="girlfriend-boyfriend">For My Love — Girlfriend / Boyfriend ❤️</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="giftType">Gift type *</label>
+              <select id="giftType" name="giftType" required>
+                <option value="">Choose a gift</option>
+                <option>Memory Movie</option>
+                <option>Photo Collage</option>
+                <option>Secret Letter</option>
+                <option>Birthday Surprise</option>
+                <option>Custom Gift</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="recipientName">Receiver’s name *</label>
+              <input id="recipientName" name="recipientName" placeholder="Who is it for?" required />
+            </div>
+            <div class="field">
+              <label for="occasion">Occasion</label>
+              <select id="occasion" name="occasion">
+                <option>Just because</option>
+                <option>Birthday</option>
+                <option>Anniversary</option>
+                <option>Friendship</option>
+                <option>Congratulations</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="message">Your message or idea *</label>
+              <textarea id="message" name="message" rows="4" placeholder="Tell us the vibe, names, dates and message you want included..." required></textarea>
+            </div>
+            <div class="field full">
+              <label for="assets">Photo/video files (optional)</label>
+              <input id="assets" name="assets" type="file" accept="image/*,video/*" multiple />
+              <small>Prototype note: files are not uploaded or stored. A secure upload system will be connected in the backend phase.</small>
+            </div>
+          </div>
+          <div class="payment-note"><strong>Payment for now:</strong> manual JazzCash/Easypaisa. Payment details and confirmation will be provided by the business after the order process is connected. Do not send money to an unverified number.</div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Prepare my order request ♡</button>
+            <button class="btn btn-secondary" type="reset">Clear form</button>
+          </div>
+          <div class="result" id="orderResult" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div><strong>♡ My Special Someone</strong><p>Personal memories. Secret surprises. Made with love.</p></div>
+    <div style="font-size:.85rem;color:#d5c5d8;">© <span id="year"></span> My Special Someone</div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal-backdrop" id="giftModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+      <div style="font-size:2.4rem">🎁</div>
+      <h2 id="modalTitle">Your surprise is waiting…</h2>
+      <p id="modalIntro">A secret gift has been made especially for you.</p>
+      <div class="surprise-content" id="surpriseContent">
+        <div style="font-size:2.4rem">💌</div>
+        <h3 id="surpriseHeading">A little message for you</h3>
+        <p id="surpriseMessage">You are someone’s special person. This demo shows the reveal animation; real order gifts will be loaded securely from the backend.</p>
+      </div>
+      <button class="btn btn-primary" id="revealButton" style="margin-top:10px;">Open my gift ✨</button>
+    </div>
+  </div>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const toast = (message) => {
+      const el = $("#toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => el.classList.remove("show"), 3000);
+    };
+    $("#year").textContent = new Date().getFullYear();
+
+    document.querySelectorAll("[data-scroll-order]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const category = button.dataset.category;
+        const gift = button.dataset.gift;
+        if (category) $("#giftFor").value = category;
+        if (gift) $("#giftType").value = gift;
+        $("#order").scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => $("#customerName").focus({ preventScroll: true }), 450);
+      });
+    });
+
+    $("#orderForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+      const selectedFiles = $("#assets").files;
+      const orderId = "MSS-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+      const result = $("#orderResult");
+      result.innerHTML = `
+        <strong>Demo request prepared! ♡</strong>
+        <p>Reference: <code>${orderId}</code></p>
+        <p><strong>Gift:</strong> ${escapeHtml(data.giftType)} for ${escapeHtml(data.recipientName)}</p>
+        <p><strong>Category:</strong> ${data.giftFor === "couples" ? "Unlock My Heart ❤️" : data.giftFor === "friends" ? "Revealora 💜" : "For My Love ❤️"}</p>
+        <p><strong>Files selected on this device:</strong> ${selectedFiles.length}. They have <em>not</em> been uploaded.</p>
+        <p class="small-note">This is only a browser demo. The request has not been sent or saved to an admin dashboard. A backend is needed before taking real orders or payments.</p>
+        <button class="btn btn-secondary" type="button" id="downloadRequest" style="margin-top:8px;">Download request summary</button>`;
+      result.classList.add("show");
+      $("#downloadRequest").addEventListener("click", () => {
+        const summary = [
+          "My Special Someone — Demo Order Request",
+          `Reference: ${orderId}`,
+          `Customer: ${data.customerName}`,
+          `Contact: ${data.customerContact}`,
+          `Category: ${data.giftFor}`,
+          `Gift: ${data.giftType}`,
+          `Receiver: ${data.recipientName}`,
+          `Occasion: ${data.occasion}`,
+          `Message: ${data.message}`,
+          `Selected files (not uploaded): ${selectedFiles.length}`
+        ].join("\n");
+        const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${orderId}-request.txt`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      });
+      result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[char]));
+    }
+
+    const demoCodes = {
+      "LOVE-7294": {
+        title: "Unlock My Heart ❤️",
+        intro: "A romantic surprise is waiting for you.",
+        heading: "You are loved, more than words can say 💗",
+        message: "Every memory with you is a favourite. This is a demo reveal page — your real photos, video and personal message will appear here once secure gift storage is connected."
+      },
+      "FRIEND-2486": {
+        title: "Revealora 💜",
+        intro: "A best-friend surprise is waiting for you.",
+        heading: "Best friends make life brighter ✨",
+        message: "Thank you for every laugh, every memory and every little moment. This is a demo reveal page — your real collage or video will appear here once secure gift storage is connected."
+      },
+      "MYLOVE-1357": {
+        title: "For My Love ❤️",
+        intro: "Someone who loves you made a sweet surprise just for you.",
+        heading: "You will always be my favourite person ❤️",
+        message: "Every little moment with you means something special. This is a demo reveal page — your real photos, video and personal message will appear here once secure gift storage is connected."
+      }
+    };
+    let activeSurprise = null;
+    $("#codeForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const code = $("#secretCode").value.trim().toUpperCase();
+      const result = $("#codeResult");
+      const surprise = demoCodes[code];
+      if (!surprise) {
+        result.innerHTML = "<strong>Hmm, this code didn’t work.</strong><p>Please check the code and try again. Real private codes will be verified securely by the backend after setup.</p>";
+        result.classList.add("show");
+        return;
+      }
+      activeSurprise = surprise;
+      $("#modalTitle").textContent = surprise.title;
+      $("#modalIntro").textContent = surprise.intro;
+      $("#surpriseHeading").textContent = surprise.heading;
+      $("#surpriseMessage").textContent = surprise.message;
+      $("#surpriseContent").classList.remove("show");
+      $("#revealButton").style.display = "inline-block";
+      $("#giftModal").classList.add("show");
+      document.body.style.overflow = "hidden";
+      result.innerHTML = `<strong>Demo code accepted! 🎉</strong><p>Your surprise is ready to reveal. <button class="btn btn-secondary" type="button" id="openAgain">Open it</button></p>`;
+      result.classList.add("show");
+      $("#openAgain").addEventListener("click", openModal);
+    });
+    function openModal() {
+      $("#giftModal").classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+    $("#revealButton").addEventListener("click", () => {
+      $("#surpriseContent").classList.add("show");
+      $("#revealButton").style.display = "none";
+    });
+    function closeModal() {
+      $("#giftModal").classList.remove("show");
+      document.body.style.overflow = "";
+    }
+    $("#modalClose").addEventListener("click", closeModal);
+    $("#giftModal").addEventListener("click", (event) => {
+      if (event.target === $("#giftModal")) closeModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeModal();
+    });
+    $("#giftFor").addEventListener("change", (event) => {
+      document.body.dataset.theme = event.target.value;
+      toast(event.target.value === "couples" ? "Romantic theme selected ❤️" : "Friendship theme selected 💜");
+    });
+  </script>
+</body>
+</html>
